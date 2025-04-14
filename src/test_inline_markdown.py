@@ -45,25 +45,25 @@ class TextInlineMarkdown(unittest.TestCase):
             new_nodes,
         )
 
-    # def test_delimiter_code_and_bold(self):
-    #     node = TextNode(
-    #         "This is text with a `code block` word and another **code block two** word",
-    #         TextType.TEXT,
-    #     )
-    #     new_nodes = split_nodes_delimiter([node], "`", TextType.CODE)
-    #     print(new_nodes)
-    #     new_nodes = split_nodes_delimiter(new_nodes, "**", TextType.BOLD)
-    #     print(new_nodes)
-    #     self.assertListEqual(
-    #         [
-    #             TextNode("This is text with a ", TextType.TEXT),
-    #             TextNode("code block", TextType.CODE),
-    #             TextNode(" word and another ", TextType.TEXT),
-    #             TextNode("code block two", TextType.BOLD),
-    #             TextNode(" word", TextType.TEXT),
-    #         ],
-    #         new_nodes,
-    #     )
+    def test_delimiter_code_and_bold(self):
+        node = TextNode(
+            "This is text with a `code block` word and another **code block two** word",
+            TextType.TEXT,
+        )
+        new_nodes = split_nodes_delimiter([node], "`", TextType.CODE)
+        print(new_nodes)
+        new_nodes = split_nodes_delimiter(new_nodes, "**", TextType.BOLD)
+        print(new_nodes)
+        self.assertListEqual(
+            [
+                TextNode("This is text with a ", TextType.TEXT),
+                TextNode("code block", TextType.CODE),
+                TextNode(" word and another ", TextType.TEXT),
+                TextNode("code block two", TextType.BOLD),
+                TextNode(" word", TextType.TEXT),
+            ],
+            new_nodes,
+        )
 
     def test_delim_bold_and_italic(self):
         node = TextNode("**bold** and _italic_", TextType.TEXT)
