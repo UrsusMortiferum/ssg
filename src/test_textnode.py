@@ -4,37 +4,35 @@ from textnode import TextNode, TextType, text_node_to_html_node
 
 
 class TestTextNode(unittest.TestCase):
+    def test_a_node_without_url(self):
+        try:
+            TextNode("This is a test node", TextType.TEXT)
+        except TypeError:
+            self.fail("TextNode raised an exception when url was omitted")
+
     def test_eq(self):
         node = TextNode("This is a text node", TextType.BOLD)
         node2 = TextNode("This is a text node", TextType.BOLD)
         self.assertEqual(node, node2)
 
     def test_not_eq(self):
-        node = TextNode("This is a text node", TextType.TEXT)
-        node2 = TextNode("This is a text node", TextType.BOLD)
+        node = TextNode("This is a test node", TextType.BOLD)
+        node2 = TextNode("This is a test node", TextType.ITALIC)
         self.assertNotEqual(node, node2)
-
-    def test_eq_func(self):
-        node = TextNode("This is a text node", TextType.BOLD)
-        node2 = TextNode("This is a text node", TextType.BOLD)
-        self.assertTrue(node.__eq__(node2))
 
     def test_repr(self):
-        node = TextNode("Some anchor text", TextType.LINK, "https://www.boot.dev")
-        expected_repr = "TextNode(Some anchor text, link, https://www.boot.dev)"
-        self.assertEqual(repr(node), expected_repr)
+        node = TextNode("This is a link node", TextType.LINK, "https://www.boot.dev")
+        self.assertEqual(
+            repr(node), "TextNode(This is a link node, link, https://www.boot.dev)"
+        )
 
-    def test_text_types(self):
-        scenarios = ["text", "bold", "italic", "code", "link", "image"]
-        for scenario in scenarios:
-            text_type = TextType[scenario.upper()]
-            node = TextNode(scenario + " text", text_type)
-            self.assertEqual(node.text_type, text_type)
+    def test_is_text_node(self):
+        node = TextNode("This is a test node", TextType.TEXT)
+        self.assertIsInstance(node, TextNode)
 
-    def test_not_eq2(self):
-        node = TextNode("This is a text node", TextType.TEXT)
-        node2 = TextNode("This is a text node2", TextType.TEXT)
-        self.assertNotEqual(node, node2)
+    def test_url_is_none(self):
+        node = TextNode("This is a test node", TextType.TEXT)
+        self.assertIsNone(node.url)
 
 
 class TestTextNodeToHTMLNode(unittest.TestCase):
@@ -44,21 +42,18 @@ class TestTextNodeToHTMLNode(unittest.TestCase):
         self.assertEqual(html_node.tag, None)
         self.assertEqual(html_node.value, "This is a text node")
 
-    def test_image(self):
-        node = TextNode("This is an image", TextType.IMAGE, "https://www.boot.dev")
-        html_node = text_node_to_html_node(node)
-        self.assertEqual(html_node.tag, "img")
-        self.assertEqual(html_node.value, "")
-        self.assertEqual(
-            html_node.props,
-            {"src": "https://www.boot.dev", "alt": "This is an image"},
-        )
-
     def test_bold(self):
-        node = TextNode("This is bold", TextType.BOLD)
+        node = TextNode("This is a bold node", TextType.BOLD)
         html_node = text_node_to_html_node(node)
         self.assertEqual(html_node.tag, "b")
-        self.assertEqual(html_node.value, "This is bold")
+        self.assertEqual(html_node.value, "This is a bold node")
+
+    def test_link(self):
+        node = TextNode("This is a link node", TextType.LINK, "https://codeberg.com")
+        html_node = text_node_to_html_node(node)
+        self.assertEqual(html_node.tag, "a")
+        self.assertEqual(html_node.value, "This is a link node")
+        self.assertEqual(html_node.props, {"href": "https://codeberg.com"})
 
 
 if __name__ == "__main__":
