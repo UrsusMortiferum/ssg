@@ -14,8 +14,8 @@ def extract_title(markdown):
 def populate_template(template, markdown, basepath):
     title = extract_title(markdown)
     html = markdown_to_html_node(markdown).to_html()
-    html = html.replace('href="/', f'href"{basepath}').replace(
-        'src="/', f'src"{basepath}'
+    html = html.replace('href="/', f'href="{basepath}').replace(
+        'src="/', f'src="{basepath}'
     )
     return template.replace("{{ Title }}", title).replace("{{ Content }}", html)
 
