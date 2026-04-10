@@ -2,4 +2,4 @@
 
 source "$(dirname "$0")/runPython.sh"
 
-run_python src/main.py "/ssg"
+run_python src/main.py "/ssg/"
