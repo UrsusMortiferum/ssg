@@ -11,7 +11,7 @@ BOLD = "\x1b[1m"
 RESET = "\x1b[0m"
 
 
-def debug_helper(name, obj, should_print=True):
+def debug_helper(obj, name="Not specified", should_print=True):
     color = random.choice(COLORS)
     out = f"{BOLD}{color}{name}{RESET}:\n{obj}\n"
     if should_print:
