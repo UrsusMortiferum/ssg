@@ -1,9 +1,8 @@
-from textnode import TextNode
+from copy_dir_contents import prepare_public_dir
 
 
 def main():
-    node = TextNode("This is some text", "here's a link", "https://www.boot.dev")
-    print(node)
+    prepare_public_dir()
 
 
 if __name__ == "__main__":
