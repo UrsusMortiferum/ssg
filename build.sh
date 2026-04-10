@@ -1,3 +1,5 @@
 #!/usr/bin/env bash
 
-python3 src/main.py "/ssg/"
+source "$(dirname "$0")/runPython.sh"
+
+run_python src/main.py "/ssg"
