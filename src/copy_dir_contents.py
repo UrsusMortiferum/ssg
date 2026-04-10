@@ -2,10 +2,14 @@ import os
 import shutil
 
 
-def prepare_public_dir():
-    print("Starting preparation process of public directory...")
+def establish_project_dir():
     src_dir = os.path.dirname(os.path.abspath(__file__))
-    project_dir = os.path.dirname(src_dir)
+    return os.path.dirname(src_dir)
+
+
+def prepare_public_dir():
+    project_dir = establish_project_dir()
+    print("Starting preparation process of public directory...")
     public_dir = os.path.join(project_dir, "public")
     static_dir = os.path.join(project_dir, "static")
     if os.path.isdir(public_dir):
