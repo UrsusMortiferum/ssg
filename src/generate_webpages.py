@@ -11,13 +11,16 @@ def extract_title(markdown):
     raise ValueError("Where's my title babe? aka no title found")
 
 
-def populate_template(template, markdown):
+def populate_template(template, markdown, basepath):
     title = extract_title(markdown)
     html = markdown_to_html_node(markdown).to_html()
+    html = html.replace('href="/', f'href"{basepath}').replace(
+        'src="/', f'src"{basepath}'
+    )
     return template.replace("{{ Title }}", title).replace("{{ Content }}", html)
 
 
-def generate_pages(content_dir, template_path, dst_dir, _cache={}):
+def generate_pages(content_dir, template_path, dst_dir, basepath, _cache={}):
     if "project_dir" not in _cache:
         _cache["project_dir"] = establish_project_dir()
     project_dir = _cache["project_dir"]
@@ -35,7 +38,7 @@ def generate_pages(content_dir, template_path, dst_dir, _cache={}):
         if os.path.isfile(entry_path):
             with open(entry_path, "r") as f:
                 markdown = f.read()
-            html_output = populate_template(template, markdown)
+            html_output = populate_template(template, markdown, basepath)
             abs_dst_path = os.path.join(abs_dst_dir, entry).replace(".md", ".html")
             with open(abs_dst_path, "w") as f:
                 f.write(html_output)
@@ -45,32 +48,4 @@ def generate_pages(content_dir, template_path, dst_dir, _cache={}):
             next_abs_dst_dir = os.path.join(abs_dst_dir, entry)
             os.makedirs(next_abs_dst_dir)
             # os.makedirs(abs_dst_dir, exist_ok=True)  # for entries directly in public
-            generate_pages(next_content_dir, template_path, next_dst_dir)
-
-
-# def generate_page(src_path, template_path):
-#     project_dir = establish_project_dir()
-#     dst_path = src_path.replace("content", "public").replace(".md", ".html")
-#     print(f"Generating web page from {src_path} to {dst_path} using {template_path}.")
-#
-#     abs_src_path = os.path.join(project_dir, src_path)
-#     abs_template_path = os.path.join(project_dir, template_path)
-#     abs_dst_path = os.path.join(project_dir, dst_path)
-#     abs_dst_dir = os.path.dirname(abs_dst_path)
-#     os.makedirs(abs_dst_dir, exist_ok=True)  # for entries directly in public
-#
-#     with open(abs_src_path, "r") as f:
-#         markdown = f.read()
-#
-#     with open(abs_template_path, "r") as f:
-#         html_template = f.read()
-#
-#     title = extract_title(markdown)
-#     node = markdown_to_html_node(markdown)
-#     html = node.to_html()
-#
-#     html_output = html_template.replace("{{ Title }}", title)
-#     html_output = html_output.replace("{{ Content }}", html)
-#
-#     with open(abs_dst_path, "x") as f:
-#         f.write(html_output)
+            generate_pages(next_content_dir, template_path, next_dst_dir, basepath)

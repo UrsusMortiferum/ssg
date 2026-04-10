@@ -7,19 +7,16 @@ def establish_project_dir():
     return os.path.dirname(src_dir)
 
 
-def prepare_public_dir():
+def prepare_dst_dir(dst_dir):
     project_dir = establish_project_dir()
-    print("Starting preparation process of public directory...")
-    public_dir = os.path.join(project_dir, "public")
+    print(f"Starting preparation process of {dst_dir} directory...")
+    dst_dir = os.path.join(project_dir, dst_dir)
     static_dir = os.path.join(project_dir, "static")
-    if os.path.isdir(public_dir):
-        print("Deleting public directory...")
-        print("Standby...")
-        print("Encountered an issue...")
-        shutil.rmtree(public_dir)
-        print("I'm joking, it's done.")
-    print("Copying static files to public directory...")
-    copy_dir_contents(static_dir, public_dir)
+    if os.path.isdir(dst_dir):
+        print(f"Deleting {dst_dir} directory...")
+        shutil.rmtree(dst_dir)
+    print(f"Copying static files to {dst_dir} directory...")
+    copy_dir_contents(static_dir, dst_dir)
     print("Preparation has been completed.")
 
 
