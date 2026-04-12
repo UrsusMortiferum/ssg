@@ -1,4 +1,5 @@
 import unittest
+
 from generate_webpages import extract_title
 
 
@@ -29,7 +30,7 @@ class TextExtractTitle(unittest.TestCase):
         try:
             extract_title("definitely not a title")
             self.fail("Where's my exception babe?")
-        except Exception as e:
+        except Exception:
             pass
 
 

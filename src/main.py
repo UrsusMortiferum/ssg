@@ -1,4 +1,5 @@
 import sys
+
 from copy_dir_contents import prepare_dst_dir
 from generate_webpages import generate_pages
 
